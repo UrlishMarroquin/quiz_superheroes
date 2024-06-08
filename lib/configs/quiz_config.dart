@@ -42,12 +42,6 @@ class QuizConfig {
   }
 
   bool isFinished() {
-    // if (questionIndex > questionList.length - 1) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-
     return questionIndex > questionList.length - 2 ? true : false;
   }
 

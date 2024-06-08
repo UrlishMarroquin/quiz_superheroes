@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:quizsuperheroes/configs/quiz_config.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -16,6 +14,12 @@ class _QuizPageState extends State<QuizPage> {
 
   void checkAnswer(bool userAnswer, String numberQuestion) {
     if (quizConfig.isFinished() == true) {
+      if (userAnswer) {
+        correcta ++;
+        score.add(itemScore(numberQuestion, true));
+      } else {
+        score.add(itemScore(numberQuestion, false));
+      }
       Alert(
           context: context,
           type: AlertType.info,
@@ -23,13 +27,14 @@ class _QuizPageState extends State<QuizPage> {
           desc: "El cuestionario ha llegado a su fin\ntiene $correcta respuestas correctas",
           buttons: [
             DialogButton(
-                child: Text("Aceptar"),
+                child: Text("Reiniciar"),
                 onPressed: () {
+                  correcta = 0;
                   quizConfig.restarQuizz();
                   score.clear();
                   Navigator.pop(context);
                   setState(() {});
-                }),
+                }),               
           ]).show();
     } else {
       if (userAnswer) {
