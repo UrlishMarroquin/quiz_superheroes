@@ -1,9 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:quizsuperheroes/configs/quiz_config.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-// import 'package:quickalert/quickalert.dart';
-// import 'package:flutter_images_explorer/widgets/button_answer_widget.dart';
-// import 'package:flutter_images_explorer/constans/constans.dart';
 
 class QuizPage extends StatefulWidget {
   @override
@@ -13,15 +12,15 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   QuizConfig quizConfig = QuizConfig();
   List<Widget> score = [];
-  List<Widget> buttonAnswer = [];
+  int correcta = 0;
 
   void checkAnswer(bool userAnswer, String numberQuestion) {
     if (quizConfig.isFinished() == true) {
       Alert(
           context: context,
-          type: AlertType.error,
+          type: AlertType.info,
           title: "Super Heroes",
-          desc: "El cuestionario ha llegado a su fin",
+          desc: "El cuestionario ha llegado a su fin\ntiene $correcta respuestas correctas",
           buttons: [
             DialogButton(
                 child: Text("Aceptar"),
@@ -34,11 +33,10 @@ class _QuizPageState extends State<QuizPage> {
           ]).show();
     } else {
       if (userAnswer) {
+        correcta ++;
         score.add(itemScore(numberQuestion, true));
-        print("Si es correcto");
       } else {
         score.add(itemScore(numberQuestion, false));
-        print("INCORRECTO");
       }
       quizConfig.nextQuestion();
       setState(() {});
@@ -50,7 +48,7 @@ class _QuizPageState extends State<QuizPage> {
       children: [
         Text(
           "$numberQuestion: ",
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 18,
           ),
@@ -63,14 +61,6 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //generateButtonAnswer();
-  }
-
-  //String heroName = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
